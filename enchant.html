@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enchant Items</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <center>
+        <h1>Here you can enchant items.</h1>
+        
+        <!-- Enchanting Area -->
+        <div class="inventory" id="inventory">
+            <h2>Inventory</h2>
+            <!-- Example item that can be clicked to add to enchantment -->
+            <div class="inventory-slot" id="inventory-slot">
+                <img src="arm.png" width="100" height="100" alt="Item" onclick="addItemToEnchant(event)">
+            </div>
+        </div>
+        
+
+        <!-- Enchanting Controls -->
+        <div id="enchant-area">
+            <h3>Enchant your item:</h3>
+            <div id="selected-item" class="item"></div>
+            <select id="enchantment-select">
+                <option value="Fire">Fire</option>
+                <option value="Ice">Ice</option>
+                <option value="Lightning">Lightning</option>
+            </select>
+            <button onclick="enchantItem()">Enchant</button>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="image-row">
+            <img src="door.png" width="150" height="150" alt="door" onclick="navigateToPage('bBoss_Lost.html')">
+            <img src="door.png" width="150" height="150" alt="door" onclick="navigateToPage('sBoss_Lost.html')">
+            <img src="doorO.png" width="150" height="150" alt="door" onclick="navigateToPage('index.html')">
+        </div>
+    </center>
+    <script src="script.js"></script>
+</body>
+</html>

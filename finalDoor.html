@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Door</title>
+    <link rel="stylesheet" href="finalDoor.css">
+</head>
+<body>
+    <center>
+        <div id="condition-container2"></div> <!-- Placeholder for success or failure message -->
+    </center>
+
+    <script src="script.js"></script>
+
+    <script>
+      window.onload = function() {
+        // Check if localStorage is enabled
+        if (typeof(Storage) === "undefined") {
+          alert("LocalStorage is not supported in this browser.");
+          return;
+        }
+
+        // Final required keys to open the final door
+        const requiredFinalKeys = ["key1.png", "key2.png"]; // Add all key file names that are required
+        checkFinalDoorKeys(
+          requiredFinalKeys,
+          "Congratulations! You have unlocked the Final Door. <br/> Next part coming soon...",
+          "You need to collect all the keys to unlock the Final Door."
+        );
+      };
+
+      function checkFinalDoorKeys(keys, successMessage, failureMessage) {
+        const inventory = JSON.parse(localStorage.getItem("inventory")) || [];
+
+        // Log inventory to check stored items
+        console.log("Inventory:", inventory);
+
+        // Check if all required keys are in the inventory
+        const haveAllKeys = keys.every(key => inventory.some(i => i.src === key));
+
+        const conditionContainer = document.getElementById("condition-container2");
+
+        if (haveAllKeys) {
+          // If all required keys are found, display success message and allow navigation
+          conditionContainer.innerHTML = `
+            <div class="condition2">
+              <h1>Congratulations!</h1>
+              <h3>${successMessage}</h3>
+            </div>
+          `;
+        } else {
+          // If the keys are not present, display failure message and prevent navigation
+          conditionContainer.innerHTML = `
+            <div class="condition1">
+              <h1>You can't open the Final Door yet!</h1>
+              <p>${failureMessage}</p>
+            </div>
+          `;
+          alert(failureMessage); // Show alert when the player hasn't collected all keys
+        }
+      }
+
+      // Disable page navigation until the player has the keys
+      function navigateToPage(url) {
+        const requiredFinalKeys = ["key1.png", "key2.png"];
+        const inventory = JSON.parse(localStorage.getItem("inventory")) || [];
+
+        // Check if the player has all required keys
+        const haveAllKeys = requiredFinalKeys.every(key => inventory.some(i => i.src === key));
+
+        if (haveAllKeys) {
+          window.location.href = url;
+        } else {
+          alert("You need to collect all the keys to unlock the Final Door.");
+        }
+      }
+    </script>
+</body>
+</html>

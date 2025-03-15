@@ -1,0 +1,137 @@
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+    overflow: hidden; /* Prevents any overflow */
+}
+
+body::before {
+    content: '';
+    position: fixed; /* Fix the background image to cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('wall.webp');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5; /* Slightly reduced opacity for better readability */
+    z-index: -1; /* Place the background image behind other elements */
+}
+
+/* Styling for the game container */
+.game-container {
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    gap: 10px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.6); /* Slight background for contrast */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#reward {
+    display: flex;
+    align-items: center; /* Align the text and image vertically */
+    gap: 10px; /* Add space between the text and the image */
+  }
+  
+
+/* Styling for each card */
+.card {
+    width: 100px;
+    height: 100px;
+    background-color: #3e3e3e;
+    color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    user-select: none; /* Prevent text selection */
+}
+
+.card.flipped {
+    background-color: #a4f3a8f6;
+    color: #000;
+}
+
+.card:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+
+/* Styling for the inventory */
+.inventory {
+    margin-top: 40px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.inventory img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.inventory img:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+/* Styles for the inventory container */
+#inventory-slot {
+    margin-top: 20px; /* Adjust spacing */
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 600px) {
+    .game-container {
+        grid-template-columns: repeat(3, 80px); /* Adjust grid layout for smaller screens */
+    }
+
+    .card {
+        width: 80px;
+        height: 80px;
+        font-size: 20px; /* Smaller font size for mobile */
+    }
+
+    .inventory img {
+        width: 40px;
+        height: 40px; /* Smaller inventory items on mobile */
+    }
+}
+
+
+.game-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Adds spacing between game-container and reward */
+    padding: 20px;
+}
+
+#reward {
+    display: none;
+    font-size: 24px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5); /* Adds contrast */
+    border-radius: 10px;
+}

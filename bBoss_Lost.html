@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monkey Door</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <center>
+        <img src="monkey.png" alt="Monkey" id="monkey-door">
+        
+        <!-- This is where the message will be dynamically updated -->
+        <div id="condition-container"></div> <!-- Placeholder for success or failure message -->
+    </center>
+
+    <script src="script.js"></script>
+
+    <script>
+      window.onload = function() {
+        // Check if the required items for the monkey door are in the inventory
+        const requiredItems = ["heartG.png", "stickG.png"]; // Example items required for success
+        checkItemsInInventory(
+          requiredItems,
+          "You have the necessary items to open the Monkey Door.",
+          "You need to win the battle and have enchanted items to open the door.",
+          "key1.png" // Key to be added to inventory upon success
+        );
+      };
+
+      // Function to check inventory for required items
+      function checkItemsInInventory(items, successMessage, failureMessage, keySrc) {
+  // Get the inventory from localStorage or initialize as an empty array
+  const inventory = JSON.parse(localStorage.getItem("inventory")) || [];
+  
+  // Log inventory to debug
+  console.log('Current inventory:', inventory);
+
+  // Check if all required items are present in the inventory
+  const areItemsPresent = items.every(item => {
+    // Check if the item is present in the inventory
+    const isPresent = inventory.some(i => i.src === item);
+    console.log(`Checking item: ${item}, found: ${isPresent}`);
+    return isPresent;
+  });
+
+  const conditionContainer = document.getElementById("condition-container");
+
+  if (areItemsPresent) {
+    // If all required items are found, display success message and add a key to the inventory
+    conditionContainer.innerHTML = `
+      <div class="condition2">
+        <h1>Congratulations!</h1>
+        <h3>${successMessage}</h3>
+        <img src="doorO.png" width="150" height="150" alt="door" onclick="navigateToPage('enchant.html')">
+      </div>
+    `;
+    alert("You have received a key! It has been added to your inventory.");
+
+    // Add the key to the inventory
+    const keyItem = {
+      src: keySrc,
+      id: new Date().getTime(),
+      name: keySrc.split('.')[0],  // This will extract the file name without extension
+    };
+
+    // Add the key item to the inventory
+    inventory.push(keyItem);
+    localStorage.setItem("inventory", JSON.stringify(inventory));
+
+    // Update the inventory display
+    updateInventoryDisplay();
+  } else {
+    // If the items are not present, display the failure message
+    conditionContainer.innerHTML = `
+      <div class="condition1">
+        <h1>You lost the battle!</h1>
+        <p>${failureMessage}</p>
+      </div>
+    `;
+  }
+}
+
+
+      // Update the inventory display (function from your original script)
+      function updateInventoryDisplay() {
+        const inventorySlot = document.getElementById("inventory-slot");
+        let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
+
+        inventorySlot.innerHTML = "";
+
+        inventory.forEach((item) => {
+          const img = document.createElement("img");
+          img.src = item.src;
+          img.dataset.id = item.id;
+          img.width = 100;
+          img.height = 100;
+          img.onclick = addItemToEnchant; // Allow clicking to select for enchantment
+          img.ondblclick = function () {
+            removeFromInventory(item.id);
+          };
+          inventorySlot.appendChild(img);
+        });
+      }
+    </script>
+</body>
+</html>

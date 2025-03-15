@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harry Potter Door</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <center>
+        <img src="harryP.png" alt="Harry Potter" id="harry-potter-door">
+        <div id="condition-container1"></div> <!-- Placeholder for success or failure message -->
+    </center>
+
+    <script src="script.js"></script>
+
+    <script>
+      window.onload = function() {
+        // Check if localStorage is enabled
+        if (typeof(Storage) === "undefined") {
+          alert("LocalStorage is not supported in this browser.");
+          return;
+        }
+        
+        // Clear localStorage for testing purposes
+        // localStorage.clear();  // Uncomment this line to reset inventory (do this once for testing)
+
+        // Check if the required items for the Harry Potter door are in the inventory
+        const requiredItems = ["heartG.png", "stickG.png"];
+        checkItemsInInventory(
+          requiredItems,
+          "You have the necessary items to open the Harry Potter Door.",
+          "You need to win the battle and have enchanted items to open the door.",
+          "key2.png"
+        );
+      };
+
+      function checkItemsInInventory(items, successMessage, failureMessage, keySrc) {
+        const inventory = JSON.parse(localStorage.getItem("inventory")) || [];
+        
+        // Log inventory to check the stored items
+        console.log("Inventory:", inventory);
+
+        // Check if all required items are in inventory
+        const areItemsPresent = items.every(item => inventory.some(i => i.src === item));
+
+        const conditionContainer = document.getElementById("condition-container1");
+
+        if (areItemsPresent) {
+          conditionContainer.innerHTML = `
+            <div class="condition2">
+              <h1>Congratulations!</h1>
+              <h3>${successMessage}</h3>
+              <img src="doorO.png" width="150" height="150" alt="door" onclick="navigateToPage('enchant.html')">
+            </div>
+          `;
+          alert("You have received a key! It has been added to your inventory.");
+
+          // Add the key to the inventory
+          const keyItem = {
+            src: keySrc,
+            id: new Date().getTime(),
+            name: keySrc.split('.')[0],  // This will extract the file name without extension
+
+          };
+
+          // Add the key to inventory
+          inventory.push(keyItem);
+
+          // Log the updated inventory
+          console.log("Updated Inventory with Key:", inventory);
+
+          // Save the updated inventory back to localStorage
+          localStorage.setItem("inventory", JSON.stringify(inventory));
+
+          updateInventoryDisplay();
+        } else {
+          conditionContainer.innerHTML = `
+            <div class="condition1">
+              <h1>You lost the battle!</h1>
+              <p>${failureMessage}</p>
+            </div>
+          `;
+        }
+      }
+
+      function updateInventoryDisplay() {
+        const inventorySlot = document.getElementById("inventory-slot");
+        let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
+
+        // Clear the inventory display
+        inventorySlot.innerHTML = "";
+
+        inventory.forEach((item) => {
+          const img = document.createElement("img");
+          img.src = item.src;
+          img.dataset.id = item.id;
+          img.width = 100;
+          img.height = 100;
+          img.onclick = addItemToEnchant; // Allow clicking to select for enchantment
+          img.ondblclick = function () {
+            removeFromInventory(item.id);
+          };
+          inventorySlot.appendChild(img);
+        });
+      }
+
+      // Debugging function to check localStorage
+      function checkLocalStorage() {
+        let inventory = JSON.parse(localStorage.getItem("inventory"));
+        if (!inventory) {
+          console.log("No inventory in localStorage.");
+        } else {
+          console.log("Inventory in localStorage:", inventory);
+        }
+      }
+    </script>
+</body>
+</html>
